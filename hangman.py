@@ -21,7 +21,7 @@ def initialize_game():
 	letters_wrong = [] # initialize letters_wrong
 
 	#call new_word
-	new_word(total_guesses, letters_wrong, letters_right)
+	new_word(total_guesses, letters_wrong)
 
 
 """Pick a new word"""
@@ -77,7 +77,7 @@ def letter_correct(letters_right,current_word,letter):
 	return letters_right
 
 
-def game_won(tota_guesses, letter_right, current_word):
+def game_won(total_guesses, letters_right, current_word):
 	if ("_" not in letters_right):
 		print "Congrats! You won! The word is: " + "".join(current_word)
 		print "It took you " + str(total_guesses) + " guesses"
@@ -91,17 +91,27 @@ def game_won(tota_guesses, letter_right, current_word):
 	else: 
 		return False
 
-def letter_wrong():
-	pass
+
+def game_lost(letters_wrong, current_word):
+	if (len(letters_wrong) >= MAX_WRONG):
+		print "You lost"
+		print "The word was: " + current_word
+		play_again = raw_input("Want to play again? (Y/N): ").lower()
+		if(play_again == "y"): 
+			print"Here we go!"
+			initialize_game()
+		else: 
+			exit()
+	
+	#the user has not lost, so keep playing
+	else:
+		return False
 
 
-def game_lost():
-	pass
 
 """Preconditions: a word has been chosen and a guess has been made
 Check if the letter is part of the chosen word
-and return the word with all correct letters and blanks
-Postconditions: num_wrong and total guesses updated, letters_wrong or letters_right updated"""
+and return the word with all correct letters and blanks"""
 def guess(total_guesses, letters_wrong, letters_right, current_word):
 
 	#variable to track current state: 0 = don't guess again; 1 = guess again
@@ -117,7 +127,7 @@ def guess(total_guesses, letters_wrong, letters_right, current_word):
 	print "Your word so far is: " + " ".join(letters_right)
 	
 	#display remaining moves
-	print "You have " + str(max_wrong - len(num_wrong)) + " wrong moves left"
+	print "You have " + str(MAX_WRONG - len(letters_wrong)) + " wrong moves left"
 
 	#prompt the letter input
 	letter = raw_input("Guess a letter: ").lower()
@@ -141,31 +151,12 @@ def guess(total_guesses, letters_wrong, letters_right, current_word):
 	
 	#the letter is incorrect
 	else:
-		
-		letter_wrong()
-	
-	#check if letter isn't in word
-	elif (letter not in current_word):
 		print "The letter '" + letter + "' is not in the word"
-		#check if the user has lost
-		if (len(letters_wrong) >= max_wrong):
-			print "You lost"
-			print "The word was: " + current_word
-			play_again = raw_input("Want to play again? (Y/N): ").lower()
-			if(play_again == "y"): 
-				print"Here we go!"
-				new_word()
-			else: 
-				exit()
-		
-		#the user has not lost, so keep playing
-		else:
+		if not game_lost(letters_wrong, current_word):
 			letters_wrong.append(letter)
 			total_guesses += 1
-			guess()
-
-
-	else: print "something went wrong"
+			guess(total_guesses, letters_wrong, letters_right, current_word)
+	
 
 """initiate game"""
 initialize_game()
