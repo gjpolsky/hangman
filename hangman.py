@@ -96,7 +96,7 @@ def letter_wrong():
 
 
 def game_lost():
-
+	pass
 
 """Preconditions: a word has been chosen and a guess has been made
 Check if the letter is part of the chosen word
@@ -123,11 +123,11 @@ def guess(total_guesses, letters_wrong, letters_right, current_word):
 	letter = raw_input("Guess a letter: ").lower()
 
 	#check that the input is valid
-	if !verify_input(letter):
+	if not verify_input(letter):
 		guess(total_guesses, letters_wrong, letters_right, current_word)
 
 	#check if letter has already been guessed
-	elif !already_guessed(letter, letters_right, letters_wrong):
+	elif  not already_guessed(letter, letters_right, letters_wrong):
 		guess(total_guesses, letters_wrong, letters_right, current_word)
 	
 	#check if the letter is in the word
@@ -136,12 +136,12 @@ def guess(total_guesses, letters_wrong, letters_right, current_word):
 		total_guesses += 1
 		
 		#if the user has not won, guess again
-		if !game_won(total_guesses, letters_right, current_word):
+		if  not game_won(total_guesses, letters_right, current_word):
 			guess(total_guesses, letters_wrong, letters_right, current_word)
 	
 	#the letter is incorrect
 	else:
-
+		
 		letter_wrong()
 	
 	#check if letter isn't in word
